@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "фетта → OZON",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "author": "An1by (https://github.com/an1by)",
     "description": "Добавляет к карточкам товаров на fetta.app ссылку на OZON",
     "icons": {
