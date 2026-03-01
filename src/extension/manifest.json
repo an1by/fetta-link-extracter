@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "фетта → OZON",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "author": "An1by (https://github.com/an1by)",
     "description": "Добавляет к карточкам товаров на fetta.app ссылку на OZON",
     "icons": {
@@ -9,6 +9,20 @@
         "48": "assets/icon-48.png",
         "64": "assets/icon-64.png",
         "128": "assets/icon-128.png"
+    },
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "fetta-ozon@an1by.github.io",
+            "strict_min_version": "140.0",
+            "data_collection_permissions": {
+                "required": [
+                    "none"
+                ]
+            }
+        },
+        "gecko_android": {
+            "strict_min_version": "142.0"
+        }
     },
     "host_permissions": [
         "https://fetta.app/*"
