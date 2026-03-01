@@ -1,0 +1,32 @@
+reversed/
+
+# Dependencies
+node_modules/
+package-lock.json
+bun.lock
+
+# Extension build / packaging
+*.crx
+*.pem
+*.zip
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Local / env
+.env
+.env.local
+.vscode/settings.json
+
+# Extension build output (sources in src/extension/)
+/extension/
+
+# Build output
+dist/
+build/
+*.tsbuildinfo

@@ -1,0 +1,33 @@
+{
+  "name": "fetta-link-extracter",
+  "version": "1.0.0",
+  "description": "Extension: adds a link to OZON on product cards at fetta.app",
+  "author": "An1by",
+  "repository": "github:an1by/fetta-link-extracter",
+  "license": "CC-BY-SA-4.0",
+  "scripts": {
+    "clean": "rimraf dist && rimraf extension",
+    "build:extension": "bun run src/scripts/build-extension.ts",
+    "build": "bun run build:extension && bun run pack",
+    "pack": "bun run src/scripts/pack.ts",
+    "publish:get-cookies:opera": "web-ext-deploy --get-cookies=opera",
+    "publish:chrome": "bun run build && web-ext-deploy --env --publish-only=chrome",
+    "publish:firefox": "bun run build && web-ext-deploy --env --publish-only=firefox",
+    "publish:edge": "bun run build && web-ext-deploy --env --publish-only=edge",
+    "publish:opera": "bun run build && web-ext-deploy --env --publish-only=opera",
+    "publish:all": "bun run build && web-ext-deploy --env",
+    "publish": "bun run publish:all"
+  },
+  "devDependencies": {
+    "@types/archiver": "^6.0.2",
+    "@types/chrome": "^0.0.287",
+    "archiver": "^7.0.1",
+    "bun-types": "latest",
+    "sharp": "^0.34.5",
+    "typescript": "^5.7.2",
+    "web-ext-deploy": "^0.14.4"
+  },
+  "dependencies": {
+    "rimraf": "^6.1.3"
+  }
+}
