@@ -16,7 +16,7 @@ copyFileSync(
 );
 cpSync(srcAssets, assetsDir, { recursive: true });
 
-const sizes = [16, 48, 128, 300] as const;
+const sizes = [16, 48, 64, 128, 300] as const;
 for (const size of sizes) {
   await sharp(iconSvg)
     .resize(size, size)
