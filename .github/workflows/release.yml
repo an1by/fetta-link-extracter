@@ -1,8 +1,8 @@
 name: Build and Release
 
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -33,23 +33,22 @@ jobs:
           done
           ls -la dist/*.zip
 
-      - name: Upload to Release
-        if: github.event_name == 'release'
+      - name: Prepare release tag
+        id: vars
+        run: |
+          echo "short_sha=${GITHUB_SHA:0:7}" >> $GITHUB_OUTPUT
+          VERSION=$(bun -e 'console.log(require("./package.json").version)')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: v${{ steps.vars.outputs.version }}-${{ steps.vars.outputs.short_sha }}
+          name: Release v${{ steps.vars.outputs.version }} (${{ steps.vars.outputs.short_sha }})
           files: |
             dist/chrome.zip
             dist/firefox.zip
             dist/opera.zip
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload artifacts
-        if: github.event_name == 'workflow_dispatch'
-        uses: actions/upload-artifact@v4
-        with:
-          name: extension-zips
-          path: |
-            dist/chrome.zip
-            dist/firefox.zip
-            dist/opera.zip
