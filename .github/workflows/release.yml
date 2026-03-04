@@ -1,0 +1,55 @@
+name: Build and Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build extension
+        run: bun run build
+
+      - name: Verify artifacts
+        run: |
+          for f in dist/chrome.zip dist/firefox.zip dist/opera.zip; do
+            test -f "$f" || (echo "Missing: $f" && exit 1)
+          done
+          ls -la dist/*.zip
+
+      - name: Upload to Release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/chrome.zip
+            dist/firefox.zip
+            dist/opera.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload artifacts
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: extension-zips
+          path: |
+            dist/chrome.zip
+            dist/firefox.zip
+            dist/opera.zip

@@ -1,4 +1,4 @@
-import { mkdirSync, copyFileSync, cpSync } from "node:fs";
+import { mkdirSync, cpSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import sharp from "sharp";
 
@@ -9,10 +9,19 @@ const srcAssets = join(root, "src", "assets");
 const assetsDir = join(extensionDir, "assets");
 const iconSvg = join(srcAssets, "icon.svg");
 
+const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf-8")) as {
+  version: string;
+};
+const manifest = JSON.parse(
+  readFileSync(join(srcExtension, "manifest.json"), "utf-8"),
+) as Record<string, unknown>;
+manifest.version = pkg.version;
+
 mkdirSync(extensionDir, { recursive: true });
-copyFileSync(
-  join(srcExtension, "manifest.json"),
+writeFileSync(
   join(extensionDir, "manifest.json"),
+  JSON.stringify(manifest, null, 4),
+  "utf-8",
 );
 cpSync(srcAssets, assetsDir, { recursive: true });
 
